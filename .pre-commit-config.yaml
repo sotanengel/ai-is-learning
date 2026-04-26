@@ -1,13 +1,22 @@
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.0
+  - repo: local
     hooks:
-      - id: ruff
-        args: [--fix]
       - id: ruff-format
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.13.0
-    hooks:
+        name: ruff format
+        language: system
+        entry: uv run ruff format
+        types: [python]
+        pass_filenames: true
+      - id: ruff-lint
+        name: ruff lint
+        language: system
+        entry: uv run ruff check --fix
+        types: [python]
+        pass_filenames: true
       - id: mypy
-        additional_dependencies: [types-pyyaml]
-        args: [--ignore-missing-imports]
+        name: mypy
+        language: system
+        entry: uv run mypy
+        types: [python]
+        pass_filenames: false
+        args: [src/]
