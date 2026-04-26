@@ -37,14 +37,18 @@ class VectorStore:
         record = {"id": concept_id, "vector": embedding, **metadata}
         if self._use_lancedb:
             self._ensure_table(len(embedding))
-            self._table.merge_insert("id").when_matched_update_all().when_not_matched_insert_all().execute([record])
+            self._table.merge_insert(
+                "id"
+            ).when_matched_update_all().when_not_matched_insert_all().execute([record])
         else:
             self._memory = [r for r in self._memory if r["id"] != concept_id]
             self._memory.append(record)
 
     def search(self, query_embedding: list[float], top_k: int = 5) -> list[dict[str, Any]]:
         if self._use_lancedb and self._table is not None:
-            results: list[dict[str, Any]] = self._table.search(query_embedding).limit(top_k).to_list()
+            results: list[dict[str, Any]] = (
+                self._table.search(query_embedding).limit(top_k).to_list()
+            )
             return results
 
         if not self._memory:

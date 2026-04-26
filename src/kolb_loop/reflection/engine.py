@@ -45,9 +45,7 @@ def _parse_reflection(raw: str, experience_id: str) -> Reflection:
             verdict=Verdict(data.get("verdict", "partial")),
             causes=data.get("causes", []),
             improvement_hypotheses=data.get("improvement_hypotheses", []),
-            evidence_spans=[
-                EvidenceSpan(**s) for s in data.get("evidence_spans", [])
-            ],
+            evidence_spans=[EvidenceSpan(**s) for s in data.get("evidence_spans", [])],
             better_response=data.get("better_response"),
             raw_llm_output=raw,
         )

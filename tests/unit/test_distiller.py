@@ -14,7 +14,9 @@ from kolb_loop.memory.schemas import ConceptStatus, Reflection, Verdict
 from kolb_loop.memory.vector_store import VectorStore
 
 
-def _make_reflection(verdict: Verdict = Verdict.FAILURE, causes: list[str] | None = None) -> Reflection:
+def _make_reflection(
+    verdict: Verdict = Verdict.FAILURE, causes: list[str] | None = None
+) -> Reflection:
     return Reflection(
         experience_id="exp-1",
         verdict=verdict,
@@ -28,6 +30,7 @@ def _mock_adapter(content: str) -> LLMAdapter:
     adapter.chat_completions = AsyncMock(
         return_value={"choices": [{"message": {"content": content}}]}
     )
+
     # Return one embedding vector per input text
     async def _embeddings(texts: list[str], model: str) -> list[list[float]]:
         return [[0.1, 0.2, 0.3, 0.4] for _ in texts]
@@ -36,13 +39,15 @@ def _mock_adapter(content: str) -> LLMAdapter:
     return adapter
 
 
-_CONCEPT_JSON = json.dumps({
-    "category": "tool_use",
-    "title": "Check logs before acting",
-    "condition": "when diagnosing issues",
-    "action": "read logs first",
-    "expected_effect": "faster diagnosis",
-})
+_CONCEPT_JSON = json.dumps(
+    {
+        "category": "tool_use",
+        "title": "Check logs before acting",
+        "condition": "when diagnosing issues",
+        "action": "read logs first",
+        "expected_effect": "faster diagnosis",
+    }
+)
 
 
 def test_parse_concept_valid() -> None:

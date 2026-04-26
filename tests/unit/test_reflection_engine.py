@@ -60,9 +60,7 @@ def test_parse_missing_verdict_defaults_to_partial() -> None:
 def _mock_adapter(response_content: str) -> LLMAdapter:
     adapter = MagicMock(spec=LLMAdapter)
     adapter.chat_completions = AsyncMock(
-        return_value={
-            "choices": [{"message": {"content": response_content}}]
-        }
+        return_value={"choices": [{"message": {"content": response_content}}]}
     )
     return adapter
 

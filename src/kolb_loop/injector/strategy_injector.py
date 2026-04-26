@@ -55,9 +55,7 @@ class StrategyInjector:
             return messages, []
 
         # Build query from the latest user message
-        user_text = " ".join(
-            m.get("content", "") for m in messages if m.get("role") == "user"
-        )
+        user_text = " ".join(m.get("content", "") for m in messages if m.get("role") == "user")
         if not user_text.strip():
             return messages, []
 
@@ -105,9 +103,7 @@ class StrategyInjector:
         if random.random() < self._ab_test_ratio:
             return messages, []
 
-        user_text = " ".join(
-            m.get("content", "") for m in messages if m.get("role") == "user"
-        )
+        user_text = " ".join(m.get("content", "") for m in messages if m.get("role") == "user")
         if not user_text.strip():
             return messages, []
 
