@@ -189,12 +189,22 @@ def test_save_and_get_concept(db: EpisodicDB) -> None:
 
 def test_list_concepts_by_status(db: EpisodicDB) -> None:
     db.save_concept(
-        Concept(title="A", condition="c", action="a", expected_effect="e",
-                status=ConceptStatus.VALIDATED)
+        Concept(
+            title="A",
+            condition="c",
+            action="a",
+            expected_effect="e",
+            status=ConceptStatus.VALIDATED,
+        )
     )
     db.save_concept(
-        Concept(title="B", condition="c", action="a", expected_effect="e",
-                status=ConceptStatus.HYPOTHESIS)
+        Concept(
+            title="B",
+            condition="c",
+            action="a",
+            expected_effect="e",
+            status=ConceptStatus.HYPOTHESIS,
+        )
     )
 
     validated = db.list_concepts(status="validated")
