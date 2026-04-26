@@ -40,9 +40,7 @@ class LLMAdapter:
         resp.raise_for_status()
         return {}
 
-    async def chat_completions_stream(
-        self, payload: dict[str, Any]
-    ) -> AsyncIterator[bytes]:
+    async def chat_completions_stream(self, payload: dict[str, Any]) -> AsyncIterator[bytes]:
         url = f"{self._base_url}/chat/completions"
         stream_payload = {**payload, "stream": True}
         async with self._client.stream(
