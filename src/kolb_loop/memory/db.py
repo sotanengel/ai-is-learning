@@ -140,9 +140,7 @@ class EpisodicDB:
         )
 
     def get_experience(self, exp_id: str) -> Experience | None:
-        row = self._conn.execute(
-            "SELECT * FROM experiences WHERE id = ?", [exp_id]
-        ).fetchone()
+        row = self._conn.execute("SELECT * FROM experiences WHERE id = ?", [exp_id]).fetchone()
         if row is None:
             return None
         return self._row_to_experience(row)
@@ -254,9 +252,7 @@ class EpisodicDB:
         )
 
     def get_concept(self, concept_id: str) -> Concept | None:
-        row = self._conn.execute(
-            "SELECT * FROM concepts WHERE id = ?", [concept_id]
-        ).fetchone()
+        row = self._conn.execute("SELECT * FROM concepts WHERE id = ?", [concept_id]).fetchone()
         if row is None:
             return None
         return self._row_to_concept(row)
@@ -268,9 +264,7 @@ class EpisodicDB:
                 [status],
             ).fetchall()
         else:
-            rows = self._conn.execute(
-                "SELECT * FROM concepts ORDER BY confidence DESC"
-            ).fetchall()
+            rows = self._conn.execute("SELECT * FROM concepts ORDER BY confidence DESC").fetchall()
         return [self._row_to_concept(r) for r in rows]
 
     def _row_to_concept(self, row: Any) -> Concept:

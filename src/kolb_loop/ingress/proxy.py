@@ -127,9 +127,7 @@ class ProxyHandler:
         # Reassemble the last complete JSON chunk for usage stats
         full_text = b"".join(chunks).decode("utf-8", errors="replace")
         # SSE lines start with "data: "; find the last non-[DONE] one
-        lines = [
-            line[6:] for line in full_text.splitlines() if line.startswith("data: ")
-        ]
+        lines = [line[6:] for line in full_text.splitlines() if line.startswith("data: ")]
         usage: dict[str, int] = {}
         last_content = ""
         for line in reversed(lines):
