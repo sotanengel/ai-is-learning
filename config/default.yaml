@@ -1,0 +1,72 @@
+sidecar:
+  ingress:
+    host: "0.0.0.0"
+    port: 8080
+  fail_open: true  # pass-through to LLM backend on sidecar error
+
+backends:
+  main:
+    base_url: "http://localhost:11434/v1"
+    model: "qwen3:8b"
+    api_key: "sk-no-key-required"
+  reflector:
+    base_url: "http://localhost:11434/v1"
+    model: "qwen3:8b"
+    api_key: "sk-no-key-required"
+  embedder:
+    base_url: "http://localhost:11434/v1"
+    model: "bge-m3"
+    api_key: "sk-no-key-required"
+
+memory:
+  episodic:
+    type: duckdb
+    path: "./data/episodic.duckdb"
+  semantic:
+    type: lancedb
+    path: "./data/semantic"
+
+learning:
+  reflection:
+    trigger: "async_after_each"  # sync | async_after_each | batch
+    batch_interval_seconds: 300
+  abstraction:
+    trigger: "every_n_reflections"
+    n: 20
+  injection:
+    max_concepts_per_call: 3
+    min_similarity: 0.6
+    ab_test_ratio: 0.2
+
+# v3: Continual Fine-Tuning
+training:
+  enabled: false
+  default:
+    method: "qlora_sft"
+    rank: 16
+    alpha: 32
+    lr: 2.0e-4
+    epochs: 3
+    replay_ratio: 0.3
+    max_seq_len: 4096
+    loss_mask: "assistant_only"
+    quality_threshold: 0.7
+    dedup_threshold: 0.8
+  trigger:
+    by_count: 500
+    schedule: "0 3 * * 0"
+
+evaluation:
+  pass_criteria:
+    domain_lift_min: 0.05
+    general_regression_max: -3.0
+    safety_regression_max: 0.0
+
+promotion:
+  shadow_hours: 24
+  canary_pct: 10
+  canary_hours: 48
+
+adapter_registry:
+  storage: "./adapters"
+  max_active_adapters: 5
